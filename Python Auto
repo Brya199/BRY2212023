@@ -1,9 +1,11 @@
 class Automovil:
-    def __init__(self):
+    def __init__(self, id_unico):
+        self.id_unico = id_unico
         self.motor = ""
         self.encendido = False
         self.velocidad = 0
         self.limite_velocidad = 100
+        self.rpm = 0
 
     def encender(self):
         if not self.encendido:
@@ -13,35 +15,47 @@ class Automovil:
 
     def apagar(self):
         self.encendido = False
-    
-        print("\033[1;31mATENCIÓN: Su vehículo ya está apaagado!! \033[0m")
+        print("\033[1;31mATENCIÓN: Su vehículo ya está apagado!! \033[0m")
 
     def acelerar(self):
         if self.encendido:
             if self.velocidad + 10 <= self.limite_velocidad:
+                self.rpm += 100
                 self.velocidad += 10
             else:
-                print("\033[1;31mATENCIÓN: Usted a alcanzado el límite de velocidad de {100} km/h\033[0m".format(self.limite_velocidad))
+                print("\033[1;31mATENCIÓN: Usted ha alcanzado el límite de velocidad de 100 km/h\033[0m")
         else:
             print("\033[1;31mATENCIÓN: El vehículo está apagado. Encienda primero\033[0m")
 
     def frenar(self):
         self.velocidad -= 10
+        self.rpm -=100
 
     def retroceder(self):
         if self.velocidad <= 0:
             self.velocidad -= 10
+            self.rpm -=100
         else:
             print("\033[1;31mATENCIÓN: No se puede retroceder mientras el vehículo está avanzando\033[0m")
+            
+    def realizar_viraje(self):
+        if self.velocidad > 0:
+            print (f"Realizando viraje en el vehiculo {self.id_unico}, ")
+        else:
+            print(f"ATENCION: El vehiculo {self.id_unico}, deve estar en movimiento para realizar el viraje")
 
     def verEstado(self):
         print("\n*-" * 3, "ESTADO DEL VEHÍCULO", "*-" * 3)
+        print("| ID Único: ", self.id_unico, "\t\t|")
         print("| Encendido: ", self.encendido, "\t\t|")
         print("| Velocidad actual : ", self.velocidad, "km/h\t|")
         print("| Límite de velocidad: ", self.limite_velocidad, "km/h\t|")
+        print("| RPM: ", self.rpm, "\t\t|")
         print(" *-" * 10, "\n")
 
-miautito = Automovil()
+
+miautito = Automovil("TPC066")
+miautito2 = Automovil("TBP099")
 
 def menu():
     print("\033[7;33m")
@@ -50,6 +64,7 @@ def menu():
     print("3 para acelerar")
     print("4 para frenar")
     print("5 para retroceder")
+    print("6 para realizar viraje")
     print("0 para salir")
     print("\033[0m")
     print("\033[2;32m")
@@ -58,17 +73,26 @@ def menu():
     print("\033[2J")
     if opcion == 1:
         miautito.encender()
+        miautito2.encender()
     elif opcion == 2:
         miautito.apagar()
+        miautito2.apagar()
     elif opcion == 3:
         miautito.acelerar()
+        miautito2.acelerar()
     elif opcion == 4:
         miautito.frenar()
+        miautito2.frenar()
     elif opcion == 5:
         miautito.retroceder()
+        miautito2.retroceder()
+    elif opcion == 6:
+        miautito.realizar_viraje()
+        miautito2.realizar_viraje()
     elif opcion == 0:
         exit()
     miautito.verEstado()
+    miautito2.verEstado()
 
 while True:
     menu()
